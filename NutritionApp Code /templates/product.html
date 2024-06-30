@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+        .product-name {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .info-box {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            margin: 20px 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+        .info-box p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Information</h1>
+        <img src="{{ product.get('image_url', '') }}" alt="Product Image" class="product-image">
+        <p class="product-name">{{ product.get('product_name', 'Unknown Product') }}</p>
+
+        <div class="info-box">
+            <p><strong>Ingredients:</strong> {{ product.get('important_ingredients', 'Not specified') }}</p>
+        </div>
+        <div class="info-box">
+            <p><strong>Allergens:</strong> {{ product.get('allergens', 'None listed') }}</p>
+        </div>
+        <div class="info-box">
+            <p><strong>Calories:</strong> {{ product.get('calories', 'Not specified') }} kcal per 100g</p>
+        </div>
+        <!-- product.html (continuation) -->
+        </div>
+        <button onclick="window.location.href='/chat'" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 16px;">Chat</button>
+    </body>
+    </html>
+

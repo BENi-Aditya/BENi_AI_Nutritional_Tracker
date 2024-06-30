@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Entry Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <form action="{{ url_for('save_user_data') }}" method="POST">
+        <label>Name: <input type="text" name="name" required></label><br>
+        <label>Age: <input type="number" name="age" required></label><br>
+        <label>Gender: 
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female" required> Female
+        </label><br>
+        <label>Nutritional Goals: <input type="text" name="goals"></label><br>
+        <label>Allergens: <input type="text" name="allergens"></label><br>
+        <button type="submit">Next</button>
+    </form>
+</body>
+</html>

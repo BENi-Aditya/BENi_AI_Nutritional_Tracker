@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cam_test_styles.css') }}">
+</head>
+<body>
+    <h1>Webcam Test</h1>
+    <button onclick="startWebcam()">Start Camera</button>
+    <div id="video-container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <script>
+        function startWebcam() {
+            const video = document.getElementById('video');
+            const constraints = {
+                video: true
+            };
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                })
+                .catch((error) => {
+                    console.error('Error accessing the webcam:', error);
+                });
+        }
+    </script>
+</body>
+</html>
+
+

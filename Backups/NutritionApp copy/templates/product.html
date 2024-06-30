@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Product Details</h2>
+    <div>
+        <img src="{{ product['image_url'] }}" alt="Product Image">
+        <p><strong>Product Name:</strong> {{ product['product_name'] }}</p>
+        <p><strong>Description:</strong> {{ product['description'] }}</p>
+        <p><strong>Expiration Date:</strong> {{ product['expiration_date'] }}</p>
+        <p><strong>Calories (per 100g):</strong> {{ product['calories'] }}</p>
+        <p><strong>Allergens:</strong> {{ ", ".join(product['allergens']) }}</p>
+        <p><strong>Ingredients:</strong> {{ product['ingredients'] }}</p>
+    </div>
+    <a href="/chat">Chat</a>
+</body>
+</html>

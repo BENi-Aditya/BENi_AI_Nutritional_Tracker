@@ -1,0 +1,5 @@
+Flask==2.0.3
+werkzeug==2.0.3
+requests
+opencv-python
+pyzbar
