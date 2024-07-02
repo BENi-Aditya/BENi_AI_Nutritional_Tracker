@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Information</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Product Information</h1>
+    <h2>{{ product.get('product_name', 'Unknown Product') }}</h2>
+    <img src="{{ product.get('image_url', '') }}" alt="Product Image" style="max-width: 200px;">
+    <p><strong>Description:</strong> {{ product.get('description', 'No description available') }}</p>
+    <p><strong>Expiration Date:</strong> {{ product.get('expiration_date', 'Not specified') }}</p>
+    <p><strong>Calories:</strong> {{ product.get('calories', 'Not specified') }}</p>
+    <p><strong>Allergens:</strong> {{ ', '.join(product.get('allergens', [])) }}</p>
+    <p><strong>Ingredients:</strong> {{ product.get('ingredients', 'Not specified') }}</p>
+    
+    {% if product.get('nutrients') %}
+        <h3>Nutrients:</h3>
+        <ul>
+            {% for nutrient, value in product['nutrients'].items() %}
+                <li>{{ nutrient }}: {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No nutrient information available.</p>
+    {% endif %}
+</body>
+</html>

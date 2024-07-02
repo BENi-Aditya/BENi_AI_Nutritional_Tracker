@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Item</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Scan Item</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <br>
+    <button id="capture-btn">Capture</button>
+    <button id="next-btn" onclick="window.location.href='/product'">Next</button>
+    <script>
+        const video = document.getElementById('video');
+        const captureBtn = document.getElementById('capture-btn');
+        const canvas = document.createElement('canvas');
+
+        // Access the device camera and stream to video element
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            });
+
+        captureBtn.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/png');
+            
+            fetch('/capture_frame', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: dataUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Frame captured successfully');
+                } else {
+                    alert('Failed to capture frame: ' + (data.error || 'Unknown error'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

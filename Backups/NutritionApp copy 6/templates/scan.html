@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Item</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #video-container {
+            display: inline-block;
+            position: relative;
+        }
+        video {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        #capture-button {
+            background-color: #28a745;
+            color: white;
+        }
+        #next-button {
+            background-color: #007bff;
+            color: white;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scan Item</h1>
+    <div id="video-container">
+        <video id="video" width="640" height="480" autoplay></video>
+    </div>
+    <div>
+        <button id="capture-button">Capture</button>
+    </div>
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('capture-button');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            });
+
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL('image/jpeg');
+
+            $.ajax({
+                type: 'POST',
+                url: '/capture_frame',
+                contentType: 'application/json',
+                data: JSON.stringify({ image: dataUrl }),
+                success: function(response) {
+                    window.location.href = '/product';
+                },
+                error: function(response) {
+                    alert('Failed with an unknown error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

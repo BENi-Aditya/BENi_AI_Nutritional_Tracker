@@ -1,0 +1,66 @@
+app = Flask(__name__)
+
+# Set your OpenAI API key here
+openai.api_key = "sk-my-qpi-key"
+
+# Define the prompt and chat history
+prompt = "make a presentation from my notes"
+chat_history = [
+    {"role": "system", "content": "I take your notes and thematically organize them into a presentation, breaking the content down into individual slides."},
+    {"role": "user", "content": "Please take these notes a make a multi-slide presentation for me."},
+    {"role": "assistant", "content": "I write organized and easy to read presentations, that organize your slide notes into individual slides with headers and body conent."},
+    {"role": "user", "content": "can you create a presentation for me, breaking my notes down into slides with headers and body content for each slide?"},
+    {"role": "assistant", "content": "Of course please provide me with your notes."}
+]
+
+# Define a model and engine
+model_engine = "gpt-3.5-turbo"
+
+# Generate the response using the OpenAI API
+response = openai.ChatCompletion.create(
+    model=model_engine,
+    temperature=0.7,
+    max_tokens=1024,
+    n=1,
+    stop=None,
+    messages=chat_history,
+)
+
+# Print the chatbot response
+print(chat_history)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    # Get the user's prompt from the form data
+    prompt = request.form["prompt"]
+
+    # Define the chat history
+    chat_history = [{"role": "system", "content": "I take your notes and thematically organize them into a presentation, breaking the content down into individual slides."},
+                    {"role": "user", "content": "Please take these notes a make a multi-slide presentation for me."},
+                    {"role": "assistant", "content": "I write organized and easy to read presentations, that organize your slide notes into individual slides with headers and body conent."},
+                    {"role": "user", "content": "can you create a presentation for me, breaking my notes down into slides with headers and body content for each slide?"},
+                    {"role": "assistant", "content": "Of course please provide me with your notes."}]
+
+    # Generate the response using the OpenAI API
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        temperature=0.7,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        messages=chat_history,
+    )
+
+    # Extract the generated response text from the API response
+    chat_response = response.choices[0].message.content.strip()
+
+    # Render the chatbot response template with the response text
+    return render_template("chat.html", prompt=prompt, response=response)
+
+if __name__ == "__main__":
+    app.run(debug=True)

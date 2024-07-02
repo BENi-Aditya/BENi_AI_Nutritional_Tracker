@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Details</h1>
+        <div class="product-info">
+            <h2>Product Name</h2>
+            <p>{{ product.get('product_name', 'Unknown') }}</p>
+
+            <h2>Ingredients</h2>
+            <ul>
+                {% if product.get('ingredients') %}
+                    {% for ingredient in product['ingredients'] %}
+                        <li>{{ ingredient['text'] }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No ingredients specified</li>
+                {% endif %}
+            </ul>
+
+            <h2>Nutrients</h2>
+            <ul>
+                {% if product.get('nutriments') %}
+                    {% for nutrient, value in product['nutriments'].items() %}
+                        <li>{{ nutrient }}: {{ value }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li>No nutrients specified</li>
+                {% endif %}
+            </ul>
+
+            <h2>Description</h2>
+            <p>{{ product.get('description', 'No description available') }}</p>
+
+            <h2>Expiration Date</h2>
+            <p>{{ product.get('expiration_date', 'Not specified') }}</p>
+        </div>
+    </div>
+</body>
+</html>

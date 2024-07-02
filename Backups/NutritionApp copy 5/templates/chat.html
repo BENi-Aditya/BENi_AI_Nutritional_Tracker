@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Chat with AI</h2>
+    <form id="chat-form">
+        <label for="question">Ask a question about the product:</label><br>
+        <input type="text" id="question" name="question"><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+    <script>
+        const form = document.getElementById('chat-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const question = document.getElementById('question').value;
+            fetch('/ask_chatgpt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'question=' + encodeURIComponent(question)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = data.answer;
+            });
+        });
+    </script>
+</body>
+</html>

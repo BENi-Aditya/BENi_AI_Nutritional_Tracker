@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        .button:hover {background-color: #3e8e41}
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Scan Item</h1>
+    <div id="video-container">
+        <video id="video" width="640" height="480" autoplay></video>
+    </div>
+    <div class="button-container">
+        <button id="capture-button" class="button">Capture</button>
+        <button id="next-button" class="button" style="display:none;">Next</button>
+    </div>
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('capture-button');
+        const nextButton = document.getElementById('next-button');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            });
+
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL('image/jpeg');
+
+            $.ajax({
+                type: 'POST',
+                url: '/capture_frame',
+                contentType: 'application/json',
+                data: JSON.stringify({ image: dataUrl }),
+                success: function(response) {
+                    nextButton.style.display = 'inline-block';
+                },
+                error: function(response) {
+                    alert('Failed with an unknown error');
+                }
+            });
+        });
+
+        nextButton.addEventListener('click', () => {
+            window.location.href = '/product';
+        });
+    </script>
+</body>
+</html>
