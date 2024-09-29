@@ -5,7 +5,7 @@
 <p align="center" style="font-size: 1.2em;">An innovative app to scan food items, track nutritional information, expiry dates, and check for allergens. Chat with AI to get personalized dietary advice!</p>
 
 <div align="center">
-    <img src="working.png" alt="Nutritional Tracker App" width="600"/>
+    <img src="working.png" alt="Nutritional Tracker App" width="800"/>
 </div>
 
 ---
