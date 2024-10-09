@@ -10,6 +10,7 @@
 
 ---
 
+
 <h2 style="color: #f39c12;">Tech Stack</h2>
 <ul style="font-size: 1.1em;">
     <li><strong>Python</strong> - Backend logic and AI integration</li>
