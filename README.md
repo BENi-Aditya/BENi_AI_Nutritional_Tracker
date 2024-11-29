@@ -2,11 +2,11 @@
 
 <h1 align="center" style="color: #4CAF50;">BENi AI Nutritional Tracker App</h1>
 
-<p align="center">
-  <img src="assets/How it works.png" alt="How it works" width="400"/>
-</p>
-
 <p align="center" style="font-size: 1.2em;">An innovative app to scan food items, track nutritional information, expiry dates, and check for allergens. Chat with AI to get personalized dietary advice!</p>
+
+<div align="center">
+    <img src="working.png" alt="Nutritional Tracker App" width="800"/>
+</div>
 
 ---
 
