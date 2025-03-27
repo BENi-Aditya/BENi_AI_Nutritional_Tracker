@@ -1,73 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Information</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .product-image {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 8px;
-            display: block;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 24px;
-            text-align: center;
-            color: #333;
-        }
-        .product-name {
-            font-weight: bold;
-            font-size: 20px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .info-box {
-            background-color: #e7f3fe;
-            border-left: 6px solid #2196F3;
-            margin: 20px 0;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .info-box p {
-            margin: 5px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScan AI - Product Information</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nutri-green: #4CAF50;
+      --nutri-green-dark: #3B8C3F;
+      --nutri-green-light: #A5D6A7;
+      --nutri-green-pale: #E8F5E9;
+      --nutri-gray: #8E9196;
+      --nutri-dark-gray: #444;
+      --nutri-blue: #2196F3;
+      --nutri-blue-light: #e7f3fe;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      color: var(--nutri-dark-gray);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .wave-container {
+      position: absolute;
+      width: 200%;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .wave {
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23f1f5f9' opacity='0.3'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+      animation: wave 25s linear infinite;
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .floating-circles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+
+    .circle-1 {
+      top: 20%;
+      right: 15%;
+      width: 300px;
+      height: 300px;
+      background-color: var(--nutri-green-light);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .circle-2 {
+      bottom: 15%;
+      left: 10%;
+      width: 200px;
+      height: 200px;
+      background-color: var(--nutri-green);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .circle-3 {
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      background-color: var(--nutri-green-dark);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 650px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeInUp 0.5s ease-out;
+      text-align: center;
+    }
+
+    .header {
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--nutri-green-dark);
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--nutri-green-light);
+      border-radius: 2px;
+    }
+
+    .product-image-container {
+      margin: 30px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+      transform: scale(1.05);
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 26px;
+      margin: 25px 0;
+      color: #333;
+      padding: 0 20px;
+    }
+
+    .info-section {
+      margin: 35px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-box {
+      background: var(--nutri-blue-light);
+      border-left: 6px solid var(--nutri-blue);
+      margin: 0;
+      padding: 18px 24px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 17px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-box.ingredients {
+      background: #E8F5E9;
+      border-left-color: var(--nutri-green);
+    }
+
+    .info-box.allergens {
+      background: #FFF8E1;
+      border-left-color: #FFC107;
+    }
+
+    .info-box.calories {
+      background: #E3F2FD;
+      border-left-color: #2196F3;
+    }
+
+    .info-box strong {
+      color: var(--nutri-green-dark);
+      font-weight: 600;
+      margin-right: 6px;
+      font-size: 18px;
+    }
+
+    .button-container {
+      margin-top: 35px;
+    }
+
+    .button {
+      padding: 16px 32px;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      background: var(--nutri-green);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .button:hover {
+      background: var(--nutri-green-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(76, 175, 80, 0.35);
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--nutri-gray);
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      .product-image-container {
+        width: 250px;
+        height: 250px;
+      }
+      
+      h1 {
+        font-size: 28px;
+      }
+      
+      .product-name {
+        font-size: 22px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Product Information</h1>
-        <img src="{{ product.get('image_url', '') }}" alt="Product Image" class="product-image">
-        <p class="product-name">{{ product.get('product_name', 'Unknown Product') }}</p>
+  <div class="floating-circles">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+  <div class="wave-container">
+    <div class="wave"></div>
+  </div>
 
-        <div class="info-box">
-            <p><strong>Ingredients:</strong> {{ product.get('important_ingredients', 'Not specified') }}</p>
-        </div>
-        <div class="info-box">
-            <p><strong>Allergens:</strong> {{ product.get('allergens', 'None listed') }}</p>
-        </div>
-        <div class="info-box">
-            <p><strong>Calories:</strong> {{ product.get('calories', 'Not specified') }} kcal per 100g</p>
-        </div>
-        <!-- product.html (continuation) -->
-        </div>
-        <button onclick="window.location.href='/chat'" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 16px;">Chat</button>
-    </body>
-    </html>
+  <div class="container">
+    <div class="header">
+      <h1>Product Information</h1>
+    </div>
+    
+    <div class="product-image-container">
+      <img src="{{ product.get('image_url', '') }}" alt="Product Image" class="product-image">
+    </div>
+    
+    <p class="product-name">{{ product.get('product_name', 'Unknown Product') }}</p>
 
+    <div class="info-section">
+      <div class="info-box ingredients">
+        <p><strong>Ingredients:</strong> {{ product.get('important_ingredients', 'Not specified') }}</p>
+      </div>
+      
+      <div class="info-box allergens">
+        <p><strong>Allergens:</strong> {{ product.get('allergens', 'None listed') }}</p>
+      </div>
+      
+      <div class="info-box calories">
+        <p><strong>Calories:</strong> {{ product.get('calories', 'Not specified') }} kcal per 100g</p>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="button" onclick="window.location.href='/chat'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Chat with NutriScan
+      </button>
+    </div>
+    
+    <div class="footer">
+      <p>© 2024 NutriScan.AI • Your Smart Nutritionist</p>
+    </div>
+  </div>
+</body>
+</html>

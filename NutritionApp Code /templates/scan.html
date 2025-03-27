@@ -1,82 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scan Item</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            outline: none;
-            color: #fff;
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 9px #999;
-        }
-        .button:hover {background-color: #3e8e41}
-        .button:active {
-            background-color: #3e8e41;
-            box-shadow: 0 5px #666;
-            transform: translateY(4px);
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScan.AI - Scan Item</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nutri-green: #4CAF50;
+      --nutri-green-dark: #2E7D32;
+      --nutri-green-light: #8BC34A;
+      --nutri-green-pale: #E8F5E9;
+      --nutri-leaf: #66BB6A;
+      --nutri-avocado: #7CB342;
+      --nutri-mint: #AED581;
+      --nutri-lime: #C5E1A5;
+      --nutri-gray: #94a3b8;
+      --nutri-dark-gray: #334155;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(109.6deg, rgba(230, 245, 228, 1) 11.2%, rgba(242, 249, 241, 1) 91.1%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      color: var(--nutri-dark-gray);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .wave-container {
+      position: absolute;
+      width: 200%;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .wave {
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23f1f5f9' opacity='0.3'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+      animation: wave 25s linear infinite;
+    }
+
+    @keyframes wave {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .floating-circles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      filter: blur(3px);
+      mix-blend-mode: multiply;
+    }
+
+    .circle-1 {
+      top: 20%;
+      right: 15%;
+      width: 300px;
+      height: 300px;
+      background-color: var(--nutri-leaf);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .circle-2 {
+      bottom: 15%;
+      left: 10%;
+      width: 200px;
+      height: 200px;
+      background-color: var(--nutri-mint);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .circle-3 {
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      background-color: var(--nutri-lime);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-icon {
+      background-color: rgba(76, 175, 80, 0.1);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--nutri-green-dark);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .scan-container {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 680px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .scan-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--nutri-green-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .scan-description {
+      color: var(--nutri-gray);
+      font-size: 15px;
+      margin-bottom: 24px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #video-container {
+      border: 2px solid var(--nutri-green-pale);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 24px;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      max-height: 480px;
+      object-fit: cover;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .button {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: var(--nutri-green);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button:hover {
+      background: var(--nutri-green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    #capture-button {
+      background: var(--nutri-green);
+    }
+
+    #next-button {
+      background: var(--nutri-avocado);
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--nutri-gray);
+    }
+
+    .footer-icon {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 5px solid var(--nutri-green-pale);
+      border-top: 5px solid var(--nutri-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    .loading-text {
+      color: var(--nutri-green-dark);
+      font-weight: 600;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 680px) {
+      .scan-container {
+        padding: 16px;
+      }
+      
+      video {
+        max-height: 360px;
+      }
+      
+      .button {
+        padding: 12px 20px;
+        font-size: 15px;
+      }
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Scan Item</h1>
+  <div class="floating-circles">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+  <div class="wave-container">
+    <div class="wave"></div>
+  </div>
+
+  <div class="header">
+    <div class="logo-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6.8 21a4 4 0 0 1-1.6-7.7c1.9-7.8 9.8-7.8 11.7 0A4 4 0 0 1 15.2 21z"></path>
+        <path d="M12 10v4"></path>
+        <path d="M12 17.5v.5"></path>
+      </svg>
+    </div>
+    <h1>NutriScan.AI</h1>
+  </div>
+
+  <div class="scan-container">
+    <div class="scan-title">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 8h.01"></path>
+        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+        <path d="M4 22h16"></path>
+        <path d="M2 17h20"></path>
+      </svg>
+      Scan Your Food Item
+    </div>
+    <p class="scan-description">
+      Position your food item in front of the camera and click 'Capture' when ready. Our AI will identify and provide nutritional information.
+    </p>
+    
     <div id="video-container">
-        <video id="video" width="640" height="480" autoplay></video>
+      <video id="video" autoplay playsinline></video>
     </div>
+    
     <div class="button-container">
-        <button id="capture-button" class="button">Capture</button>
-        <button id="next-button" class="button" style="display:none;">Next</button>
+      <button id="capture-button" class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        Capture
+      </button>
+      <button id="next-button" class="button" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+        Next
+      </button>
     </div>
-    <script>
-        const video = document.getElementById('video');
-        const captureButton = document.getElementById('capture-button');
-        const nextButton = document.getElementById('next-button');
+  </div>
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-            });
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Analyzing your food item...</p>
+  </div>
 
-        captureButton.addEventListener('click', () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            const dataUrl = canvas.toDataURL('image/jpeg');
+  <div class="footer">
+    <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.8 21a4 4 0 0 1-1.6-7.7c1.9-7.8 9.8-7.8 11.7 0A4 4 0 0 1 15.2 21z"></path>
+    </svg>
+    © 2023 NutriScan.AI • Your Smart Nutritionist
+  </div>
 
-            $.ajax({
-                type: 'POST',
-                url: '/capture_frame',
-                contentType: 'application/json',
-                data: JSON.stringify({ image: dataUrl }),
-                success: function(response) {
-                    nextButton.style.display = 'inline-block';
-                },
-                error: function(response) {
-                    alert('Failed with an unknown error');
-                }
-            });
-        });
+  <script>
+    const video = document.getElementById('video');
+    const captureButton = document.getElementById('capture-button');
+    const nextButton = document.getElementById('next-button');
+    const loadingOverlay = document.getElementById('loading-overlay');
 
-        nextButton.addEventListener('click', () => {
-            window.location.href = '/product';
-        });
-    </script>
+    // Access the webcam
+    navigator.mediaDevices.getUserMedia({ 
+      video: { 
+        facingMode: 'environment',
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      } 
+    })
+    .then(stream => { 
+      video.srcObject = stream; 
+    })
+    .catch(err => { 
+      console.error("Error accessing camera: ", err); 
+      alert("Unable to access your camera. Please ensure you've granted camera permissions and try again.");
+    });
+
+    captureButton.addEventListener('click', () => {
+      // Show loading overlay
+      loadingOverlay.style.display = 'flex';
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      const dataUrl = canvas.toDataURL('image/jpeg');
+
+      $.ajax({
+        type: 'POST',
+        url: '/capture_frame',
+        contentType: 'application/json',
+        data: JSON.stringify({ image: dataUrl }),
+        success: function(response) {
+          // Hide loading overlay
+          loadingOverlay.style.display = 'none';
+          nextButton.style.display = 'inline-flex';
+        },
+        error: function(response) {
+          // Hide loading overlay
+          loadingOverlay.style.display = 'none';
+          alert('Failed to analyze the image. Please try again.');
+        }
+      });
+    });
+
+    nextButton.addEventListener('click', () => {
+      window.location.href = '/product';
+    });
+  </script>
 </body>
 </html>
